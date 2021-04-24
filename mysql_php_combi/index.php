@@ -50,6 +50,7 @@ if(isset($_GET['id'])){
   </head>
   <body>
     <h1><a href="index.php">WEB</a></h1>
+    <p><a href="author.php">author</a></p>
     <ol>
       <?php
         echo $list; // =$list 와 같다!

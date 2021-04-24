@@ -1,0 +1,8 @@
+2021_04_24 web3 강의 끝마치며
+ - 검색 기능을 구현하고 싶을 것
+ - form method='get' action='search.php'>
+ - index로 색인으로 검색할 수 있는 방법을 찾아보아라.
+ - mysqli를 이용했지만 mysql에 특화된 것이다.
+ - PDO(Phd Data Object)를 고려해 보아라.
+ - Doctrine, Propel 같은 것들도 있다.
+ - AWS RDS / Google Cloud SQL for MySQL / Azure Database for MySQL 등이 클라우드 서비스가 있으니까 기회가 되면 써보실?
