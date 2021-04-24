@@ -1,0 +1,12 @@
+웹브라우저 -> 웹서버 (php파일일 경우 php로 넘김.)
+mysql 함수가 포함되어있을 때 - mysql서버로 넘긴다.
+mysql에서 php로 다시 넘기고 웹서버에서 다시 웹브라우저로 출력.
+
+MySQL의 Client로서 PHP
+ - MySQL Server를 이용해 통제하는 거다.
+
+PHP와 MySQL을 같이 쓰기위해서
+PDO_MySQL이 객체를 사용하긴하는데 다른 DB프로그램과 호환성 높음.
+mysqli를 이용해서 지금 해보자.
+
+mysql general_log enable

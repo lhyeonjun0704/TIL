@@ -1,0 +1,28 @@
+basename으로 보안...
+조금 더 찾아보길 바란다.
+
+php는 객체 지향언어이긴 한데 처음에는 아니었다.
+대체적으로 함수로 제공되고있다.
+Function Reference
+Audio Formats Mnipulation 같은 쉬운거 추천.
+Compression and Archive Extensions.
+Cryptography Extensions - 암호나 보안 관련인데 무조건 필요.
+Image Processing and Generation
+Mail related Extensions - 메일관련
+
+php composer
+ - 패키지 관리자
+ - popular packages
+
+UI(User Interface)
+ - 애플리케이션에서 접하는 모든 것.
+
+API(Application programming interface)
+ - 언어 문법에 따라서 시스템에서 제공하는 함수 호출?
+ - 문법들을 모아서 새로운 기능 만든거.
+
+어떻게 공부하면 좋을까?
+ - 최소한의 공부로 문제를 해결하려고 노력해보아라.
+ - 최소한의 문법만 공부하고 해보라.
+
+
