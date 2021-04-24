@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <input type='button' value='open' onclick="winopen();" />
+    <input type='text' onkeypress='winmessage(this.value)' />
+    <input type='button' value="close" onclick="winclose()" />
+    <script type="text/javascript">
+      function winopen(){
+        win = window.open('demo2.html', 'ot');
+      }
+      function winmessage(msg){
+        win.documnet.getElementById('message').innerText=msg;
+      }
+      function winclose(){
+        win.close();
+      }
+    </script>
+  </body>
+</html>
