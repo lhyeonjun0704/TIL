@@ -1,0 +1,38 @@
+<script>코드가 <head>에 있는 경우
+ - body에 있는 태그들을 읽기 전이라는 것. 그렇기 때문에 찾아 낼 수 없다.
+ - 오류를 발생시켜서 에러가 난다.
+ - script코드에 window객체 window.onload를 써야됨.
+ - onload는 이 페이지의 모든 객체들이 다운로드되고 페이지가 완성이 되었을 때, 
+ - 이 onload를 실행하는 것으로 약속되어있다.
+ - 별도의 js파일로 나누어 놓았을 때도 그 파일에 window.onload가 필요하다.
+ - 대신 head에 넣게 되면 다른코드 보다 느리다.
+
+Object Model.
+ - 여러가지를 객체로 만들어놓는 것.
+ - 테두리와 같은 역할?
+ - JSC / BOM / DOM 
+ - 객체화
+
+window - 전역객체, frame같은 것을 제어하기 위한 객체.
+
+DOM? <Document Object Model>
+ - document(window 객체의 property) {문서를 제어함}
+
+BOM? <Browser Object Model>
+ - 
+
+경고창(alert)가 실행되고 나면 그 이후껀 바로 실행이 되진 않는다.(확인이 누르기 전까지)
+
+
+Location 객체
+ - 현재 URL을 알아내기 위한코드
+	-> console.log(location.toString(), location.href);
+console.log(location.protocol); <통신 규약 http://>
+console.log(lcoation.host); <메인 서비스 주소 ex)www.naver.com >
+console.log(locaiton.port); <포트, 컴퓨터의 소프트웨어들을 식별하는 번호>
+console.log(location.pathname); <url의 구체적인 정보>
+
+URL 변경
+ - location.href = "url"; <페이지 이동>
+ - location = "url"; <페이지 이동>
+ - location.reload(); <refresh 이다.> = F5
