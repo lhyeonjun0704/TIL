@@ -1,0 +1,2 @@
+querySelector는 태그를 하나 밖에 가져오지 못한다.
+querySelectorAll('tag')는 리스트 처럼 반환.

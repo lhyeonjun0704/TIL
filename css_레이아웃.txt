@@ -1,0 +1,49 @@
+block level
+<div>
+ - 기본적으로 블록 레벨이라 한줄에 하나씩 출력
+
+
+inline level
+<span>
+ - 한줄에 여러개
+ 
+찾기 편한 사이트 key-point
+->MDN
+
+inline-block 과 block 다름!
+height에서 vh는 %하고 다르다!
+
+display로 기본 값을 바꾸면 block->inline / inline->block 가능
+
+position레이아웃
+ - position: static; (기본 값)
+             relative; (원래 있던 자리에서 위치 바꿀 수 있음)
+             absolute; (내 아이템이 담겨있는 박스에서 제일 가까운 곳에서 시작)
+             fixed; (윈도우 안에서 움직이는 포지션)
+             sticky; (스크롤링해도 그 자리에 붙어 있게 하는 값.)
+
+Flexbox 
+ - 행 열로 자유롭게 정렬할 수 있는 박스.
+ - container가 존재
+   (display / flex-direction  / flex-wrap / flex-flow
+    justify-content / align-itmes / align-content)
+   1. display: flex; (flex 박스로 변환)
+   2. flex-direction: row; (기본값) <reverse는 오른쪽에서 부터> <column은 세로>
+   3. flew-wrap: nowrap;(기본값) 스크롤해도 따라감.
+   4. border: 1px solid black;
+   5. flex-flow: ; ; (한줄에 모든 것을 쓸 수 있게 만들어 준다.)
+   6. justify-content: flex-start;(기본값) <아이템 배치 end는 반대>
+      {space-around; 박스의 스페이싱} {space-evenly; between(이거 써);}
+   7. align-itmes: center; (수직축에서 중심에 놓고 싶다.){baseline 텍스트 균등}
+   8. align-content: space-between (MDN사이트 참고)
+
+ - item에 적용할 수 있는 값이 존재
+   (order / flex-grow / flex-shrink / flex / align-self)
+ - main axis(중심축) / cross axis(반대축) 이 존재한다.
+    1. order: 0;(기본값)<순서 지정>{쓸 일이 없다.}
+    2. flex-grow: 0;(기본값)<컨테이너를 차지하는 양 / 스크롤링하면 늘어남>
+    3. flex-shrink: 0; <컨테이너가 작아질 때 크기 조정 숫자 배수만큼 줄어듦>
+    4. flex-basis: auto; <차지하는거 %로 조정하고 auto는 자동으로 컨테이너에 맞춤>
+    5. align-self: center; <아이템 하나만 따로 배치하고 싶을 때 사용 가능>
+
+float : left / center / right
