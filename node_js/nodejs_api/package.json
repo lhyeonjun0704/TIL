@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "express-handlebars": "^5.3.2",
+    "koa": "^2.13.1",
+    "nodemailer": "^6.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "name": "node_js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon express.js -e js,json,hbs"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
