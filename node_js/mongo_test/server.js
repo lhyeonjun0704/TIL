@@ -5,24 +5,26 @@ const User = require('./models/User');
 
 const server = express();
 
-server.get('/', (req, res) => {
-    const newUser = new User();
-    newUser.email = 'danny@gmail.com';
-    newUser.name = 'danny';
-    newUser.age = 25;
-    newUser.save()
-    .then((user) => {
-        console.log(user);
-        res.json({
-            message: 'User Created Successfully'
-        })
-    })
-    .catch((err) => {
-        res.json({
-            message: 'User was not successfully created'
-        });
-    });
-});
+// server.get('/', (req, res) => {
+//     const newUser = new User();
+//     newUser.email = 'danny@gmail.com';
+//     newUser.name = 'danny';
+//     newUser.age = 25;
+//     newUser.save()
+//     .then((user) => {
+//         console.log(user);
+//         res.json({
+//             message: 'User Created Successfully'
+//         })
+//     })
+//     .catch((err) => {
+//         res.json({
+//             message: 'User was not successfully created'
+//         });
+//     });
+// });
+
+
 
 server.listen(3000, (err) => {
     if(err){
