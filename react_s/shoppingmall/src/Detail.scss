@@ -1,0 +1,71 @@
+
+$maincolor: blue;
+
+.red{
+    color: $maincolor;
+}
+
+.my-alert{
+    background-color: #eeeeee;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+    p{
+        margin-bottom: 0;
+    }
+}
+
+//extend라는 문법을 통해서 my-alert의 문법을 그대로 상속 받을 수 있음.
+.my-alert2{
+    @extend .my-alert;
+    background: #ffe591;
+}
+
+
+// 3번쨰 방법
+// 그냥 함수 만드는 방법이다. 위에 그대로 함수()를 쓰면되는데 대신 @include 함수()로 써야됨.
+// @mixin 함수(){
+//     background-color: #eeeeee;
+//     padding: 20px;
+//     border-radius: 5px;
+//     max-width: 500px;
+//     width: 100%;
+//     margin: auto;
+//     p{
+//         margin-bottom: 0;
+//     }
+// }
+
+
+// 이 때 다른 색상의 UI를 원하면 그대로 my-alert를 복사해서 2로 만든다.
+// 위에 다른 방법을 참고하자. sass=문법의 extend
+
+// .my-alert2{
+//     background-color: #eeeeee;
+//     padding: 20px;
+//     border-radius: 5px;
+//     max-width: 500px;
+//     width: 100%;
+//     margin: auto;
+//     p{
+//         margin-bottom: 0;
+//     }
+// }
+
+
+
+// div.container h4{
+//     color: blue;
+// }
+
+// 이런식으로 css를 편하게 입힐 수 있음.
+// div.container{
+//     h4{
+//         color: blue;
+//     }
+//     p{
+//         color: red;
+//     }
+// }
