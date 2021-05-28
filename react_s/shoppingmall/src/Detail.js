@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { propTypes } from 'react-bootstrap/esm/Image';
 import { useHistory, useParams } from 'react-router-dom'; // 뒤로가기 위해서 씁니다!
@@ -26,8 +27,12 @@ function Detail(props){
   let [alert, alert변경] = useState(true);
   let [inputData, input변경] = useState();
 
+
     // input(update)될 때 마다 rendering이 계속 되기 때문에 이 함수도 계속 실행됨.
     useEffect(() => {
+
+      axios.get()
+
       let 타이머 = setTimeout(() => {
         alert변경(false);
         return () => { clearTimeout(타이머) } // 이렇게 해야 버그를 방지할 수 있다. 
@@ -35,7 +40,7 @@ function Detail(props){
       // return function detail_end(){ // detail페이지가 사라질 때 실행되는 코드
 
       // };
-    }, {alert}); // alert가 변경될 때만 실행해라는 뜻, 다른 요소도 다 넣을 수 있다.(array로) 빈 어레이가 들어가면 더이상 실행이 안된다. (맞는 조건이 없기 떄문이다.)
+    }, []); // alert가 변경될 때만 실행해라는 뜻, 다른 요소도 다 넣을 수 있다.(array로) 빈 어레이가 들어가면 더이상 실행이 안된다. (맞는 조건이 없기 떄문이다.)
 
 
 
@@ -74,7 +79,14 @@ function Detail(props){
               <h4 className="pt-5">{find_items.title}</h4>
               <p>{find_items.content}</p>
               <p>{find_items.price}</p>
-              <button className="btn btn-danger">주문하기</button> 
+
+              <Stock stock_n={props.stock_n} stockmodi = {props.stockmodi}></Stock>
+
+              <button className="btn btn-danger" onClick={() => {
+                var stockArray = [...props.stock_n];
+                stockArray[0] = stockArray[0] - 1;
+                props.stockmodi(stockArray);
+              }}>주문하기</button> 
               <button className="btn btn-danger" onClick={() => {
                 history.goBack();
                 // history.push('/') 이런식으로 경로를 바로 입력해주는 방법도 있다.
@@ -85,6 +97,12 @@ function Detail(props){
     )
   }
 
+
+  function Stock(props){
+    return (
+      <p>재고 : {props.stock_n[0]}</p>
+    )
+  }
 
 
 

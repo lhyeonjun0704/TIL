@@ -16,6 +16,7 @@ import { Link, Route, Switch} from 'react-router-dom'; // Switch로 중복되도
 function App() {
 
   let [shoes, shoesmodify] = useState(Shoe_d);
+  let [stock_n, stockmodi] = useState([10, 11, 12]);
 
   return (
     <div className="App">
@@ -65,7 +66,7 @@ function App() {
       </Route>
 
       <Route path='/detail/:id'> {/*아무문자나 받겠다는 URL작명*/}
-          <Detail shoes={shoes} />
+          <Detail shoes={shoes} stock_n={stock_n} stockmodi={stockmodi} />
       </Route>
 
       {/* <Route path='/어쩌구' component={modal}></Route> */}
@@ -75,7 +76,29 @@ function App() {
       </Route>
     </Switch>
 
-    <butoon className='btn btn-primary'>더보기</butoon>
+    <butoon className='btn btn-primary' onClick={() => {
+
+      //post 예제
+      // axios.post('서버URL', { id : 'asdfds', pw: 12314 });
+
+
+      // {
+      //   loading ui 
+      // }
+      
+      axios.get('https://codingapple1.github.io/shop/data2.json')
+      .then((result) => {
+        // loading ui x
+        console.log(result.data); //axios는 json을 미리 바꿔서 데이터를 제공해 준다.
+        shoesmodify([...shoes, ...result.data]); // ... 괄호를 벗겨준다.
+      }) // 성공했을 떄 실행 함수
+      .catch(() => {
+        
+      }) // 실패했을 때 실행 함수
+
+      // 1. axios.get(데이터 요청할 URL)
+
+    }}>더보기</butoon>
 
     </div>
   );
