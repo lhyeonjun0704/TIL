@@ -6,7 +6,7 @@ import Detail from './Detail.js';
 import axios from 'axios';
 import Cart from './Cart.js';
 
-import { Link, Route, Switch} from 'react-router-dom'; // Switch로 중복되도 한개만보여주세요. exact 대신쓰지 않을까
+import { Link, Route, Switch, useHistory} from 'react-router-dom'; // Switch로 중복되도 한개만보여주세요. exact 대신쓰지 않을까
 
 // ajax는 서버에 새로고침없이 요청을 할 수 잇게 도와줌.
 // 요청은 종류는 주소창통한 GET / Post/Del/Put
@@ -65,7 +65,7 @@ function App() {
         <div className='row'>
           {
             shoes.map((a, i) => {
-              return  <Items shoes={shoes[i]} i = {i} />  
+              return  <Items shoes={shoes[i]} i = {i}  />  
             })
           }
         </div>
@@ -136,9 +136,10 @@ function App() {
 function Items(props){
 
   let stock = useContext(stockcontext); // props 없이 쓸 수 있게 된다. 3중이상의 중복에서 쓰기 편한 방법이다.
+  let history = useHistory();
 
   return(
-      <div className='col-md-4'>
+      <div className='col-md-4' onClick={() => { history.push('/detail/' + props.shoes.id) }}>
             <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"} width='100%' />
             <h4>{ props.shoes.title }</h4>
             <p>{ props.shoes.content}</p>

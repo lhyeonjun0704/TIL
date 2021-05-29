@@ -44,14 +44,14 @@ function reducer(state = 기본state, 액션){ // default parameter라는 문법
   } else if(액션.type === '수량증가'){ //
 
     let copy = [...state];
-    copy[0].quan++;
+    copy[액션.데이터].quan++;
 
     return copy
 
   } else if(액션.type === '수량감소'){
 
     let copy = [...state];
-    copy[0].quan--;
+    copy[액션.데이터].quan--;
 
     return copy
 
