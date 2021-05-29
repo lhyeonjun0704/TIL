@@ -1,9 +1,10 @@
 import './App.css';
 import { Navbar, Nav, NavDropdown, Container, Jumbotron, Button } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Shoe_d from './data.js';
 import Detail from './Detail.js';
 import axios from 'axios';
+import Cart from './Cart.js';
 
 import { Link, Route, Switch} from 'react-router-dom'; // Switch로 중복되도 한개만보여주세요. exact 대신쓰지 않을까
 
@@ -11,6 +12,10 @@ import { Link, Route, Switch} from 'react-router-dom'; // Switch로 중복되도
 // 요청은 종류는 주소창통한 GET / Post/Del/Put
 // 1. Jquery의 $.ajax() 2. axios의 axios.get() 3. javascript의 fetch()
 // react에서는 보통 axios를 쓴다. 
+
+
+
+export let stockcontext = React.createContext(); // 같은 변수값을 공유할 범위 생성
 
 
 function App() {
@@ -55,6 +60,8 @@ function App() {
         </Jumbotron>
 
        <div className='container'>
+
+        <stockcontext.Provider value={stock_n}>
         <div className='row'>
           {
             shoes.map((a, i) => {
@@ -62,13 +69,57 @@ function App() {
             })
           }
         </div>
+
+        <butoon className='btn btn-primary' onClick={() => {
+
+          //post 예제
+          // axios.post('서버URL', { id : 'asdfds', pw: 12314 });
+
+
+          // {
+          //   loading ui 
+          // }
+
+          axios.get('https://codingapple1.github.io/shop/data2.json')
+          .then((result) => {
+            // loading ui x
+            console.log(result.data); //axios는 json을 미리 바꿔서 데이터를 제공해 준다.
+            shoesmodify([...shoes, ...result.data]); // ... 괄호를 벗겨준다.
+          }) // 성공했을 떄 실행 함수
+          .catch(() => {
+            
+          }) // 실패했을 때 실행 함수
+
+          // 1. axios.get(데이터 요청할 URL)
+
+          }}>더보기</butoon>
+
+
+        </stockcontext.Provider>
+
+
       </div>
       </Route>
 
+
       <Route path='/detail/:id'> {/*아무문자나 받겠다는 URL작명*/}
+
+         <stockcontext.Provider value={stock_n}>
+
           <Detail shoes={shoes} stock_n={stock_n} stockmodi={stockmodi} />
+
+        </stockcontext.Provider>
+     
       </Route>
 
+      
+      <Route path='/cart'>
+          <Cart></Cart>
+
+      </Route>
+     
+
+      
       {/* <Route path='/어쩌구' component={modal}></Route> */}
       
       <Route path="/:id">
@@ -76,44 +127,32 @@ function App() {
       </Route>
     </Switch>
 
-    <butoon className='btn btn-primary' onClick={() => {
-
-      //post 예제
-      // axios.post('서버URL', { id : 'asdfds', pw: 12314 });
-
-
-      // {
-      //   loading ui 
-      // }
-      
-      axios.get('https://codingapple1.github.io/shop/data2.json')
-      .then((result) => {
-        // loading ui x
-        console.log(result.data); //axios는 json을 미리 바꿔서 데이터를 제공해 준다.
-        shoesmodify([...shoes, ...result.data]); // ... 괄호를 벗겨준다.
-      }) // 성공했을 떄 실행 함수
-      .catch(() => {
-        
-      }) // 실패했을 때 실행 함수
-
-      // 1. axios.get(데이터 요청할 URL)
-
-    }}>더보기</butoon>
+    
 
     </div>
   );
 }
 
 function Items(props){
+
+  let stock = useContext(stockcontext); // props 없이 쓸 수 있게 된다. 3중이상의 중복에서 쓰기 편한 방법이다.
+
   return(
       <div className='col-md-4'>
             <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"} width='100%' />
             <h4>{ props.shoes.title }</h4>
             <p>{ props.shoes.content}</p>
+            <Test></Test>
       </div>
   )
 }
 
+function Test(){
+
+  let stock = useContext(stockcontext);
+
+  return <p>재고 : {stock}</p>
+}
 
 
 

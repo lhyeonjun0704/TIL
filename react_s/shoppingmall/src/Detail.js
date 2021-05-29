@@ -1,9 +1,13 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import {Nav} from 'react-bootstrap';
 import { propTypes } from 'react-bootstrap/esm/Image';
 import { useHistory, useParams } from 'react-router-dom'; // 뒤로가기 위해서 씁니다!
 import styled from 'styled-components';
 import './Detail.scss';
+import {stockcontext} from './App.js'
+import { CSSTransition } from 'react-transition-group'; //css의 transition속성을 활용.
+import {connect} from 'react-redux';
 
 
 // css를 프로그래밍언어스럽게 작성가능한 preprocessor 변수 연산자 등 사용가능하게.
@@ -26,6 +30,12 @@ function Detail(props){
 
   let [alert, alert변경] = useState(true);
   let [inputData, input변경] = useState();
+
+  let [스위치, 스위치변경] = useState(false);
+
+  let [tab, tabmodi] = useState(0);
+
+  let stock_test = useContext(stockcontext);
 
 
     // input(update)될 때 마다 rendering이 계속 되기 때문에 이 함수도 계속 실행됨.
@@ -65,6 +75,7 @@ function Detail(props){
             alert === true 
             ? <div className='my-alert'>
               <p>재고가 얼마 남지 않았습니다.</p>
+              { stock_test }
               </div>
             : null
           }
@@ -86,6 +97,9 @@ function Detail(props){
                 var stockArray = [...props.stock_n];
                 stockArray[0] = stockArray[0] - 1;
                 props.stockmodi(stockArray);
+
+                props.dispatch({type : '항목추가', payload: {id : 2, name: '새로운상품', quan: 1} });
+
               }}>주문하기</button> 
               <button className="btn btn-danger" onClick={() => {
                 history.goBack();
@@ -93,8 +107,54 @@ function Detail(props){
               }}>뒤로가기</button> 
             </div>
           </div>
+
+          <Nav className='mt-5' variant="tabs" defaultActiveKey="/home">
+            <Nav.Item>
+              {/* evenkey = 버튼들 마다 유니크한 각각 누룰 수 있는 버튼이 됨. */}
+              <Nav.Link eventKey='link-0' onClick={() => {
+                스위치변경(false);
+                tabmodi(0);
+              }}>Option 1</Nav.Link> 
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey='link-1' onClick={() => {
+                스위치변경(false);
+                tabmodi(1);
+              }}>Option 2</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-2" onClick={() => {
+                스위치변경(false);
+                tabmodi(2);
+              }}>
+                Option 3
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+          
+          
+          {/*in은 동작 스위치(true일 때 동작) className은 이름. timeout은 애니메이션 시간 */}
+          <CSSTransition in={스위치} classNames='wow' timeout={500}>
+           <TabContent tab={tab} 스위치변경={스위치변경} />
+          </CSSTransition>
+
         </div> 
     )
+  }
+
+  function TabContent(props){
+
+    useEffect(() => {
+      props.스위치변경(true);
+    });
+    
+    if(props.tab === 0){
+      return <div>0번째 내용입니다.</div>
+    } else if(props.tab === 1){
+      return <div>1번째 내용입니다.</div>
+    } else if(props.tab === 2){
+      return <div>2번째 내용입니다.</div>
+    };
   }
 
 
@@ -118,4 +178,16 @@ function Detail(props){
   //   }
   // }
 
-   export default Detail;
+
+  function cart_table(state){
+    return {
+        state : state.reducer, // state안에 name이 있으면 주세요
+        alertf : state.reducer2
+    }
+}
+
+export default connect(cart_table)(Detail)
+
+
+
+  // export default Detail;
