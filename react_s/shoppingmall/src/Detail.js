@@ -10,7 +10,10 @@ import { CSSTransition } from 'react-transition-group'; //css의 transition속�
 import {connect} from 'react-redux';
 
 
-// css를 프로그래밍언어스럽게 작성가능한 preprocessor 변수 연산자 등 사용가능하게.
+// scss는 css를 프로그래밍언어스럽게 작성가능한 preprocessor 변수 연산자 등 사용가능하게.
+
+
+
 
 
 //클래스 작명 필요없음.
@@ -25,7 +28,12 @@ let 제목 = styled.h4`
 // 다른 스타일의 제목이 필요할때?
 
 
+
+
 function Detail(props){
+
+  let { id } = useParams();
+  let history = useHistory();
 
 
   let [alert, alert변경] = useState(true);
@@ -36,6 +44,17 @@ function Detail(props){
   let [tab, tabmodi] = useState(0);
 
   let stock_test = useContext(stockcontext);
+
+  useEffect(() => {
+    var arr = localStorage.getItem('watched');
+    if(arr === null){ arr = []} else{arr = JSON.parse(arr)}
+
+    arr.push(id); // Set 자료형으로 중복 제거가 자동으로 가능하다.
+    arr = new Set(arr);
+    arr = [...arr];
+
+    localStorage.setItem('watched', JSON.stringify(arr) );
+  }, [])
 
 
     // input(update)될 때 마다 rendering이 계속 되기 때문에 이 함수도 계속 실행됨.
@@ -54,8 +73,6 @@ function Detail(props){
 
 
 
-    let { id } = useParams();
-    let history = useHistory();
 
 
     let find_items = props.shoes.find((items)=>{

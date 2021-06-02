@@ -1,12 +1,19 @@
 import './App.css';
 import { Navbar, Nav, NavDropdown, Container, Jumbotron, Button } from 'react-bootstrap';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, lazy, Suspense } from 'react';
 import Shoe_d from './data.js';
-import Detail from './Detail.js';
 import axios from 'axios';
 import Cart from './Cart.js';
-
 import { Link, Route, Switch, useHistory} from 'react-router-dom'; // Switch로 중복되도 한개만보여주세요. exact 대신쓰지 않을까
+
+// import Detail from './Detail.js';
+let Detail = lazy(() => { return import('./Detail.js') }); 
+//lazy loading 이 컴포넌트가 필요해 졌을 때 로딩해 달라.
+
+
+
+// 컴포넌트 import 할 때 미리 다 로드하기 때문에 부담이 될 수 있다. 개르서 lay loading을 쓴다.
+
 
 // ajax는 서버에 새로고침없이 요청을 할 수 잇게 도와줌.
 // 요청은 종류는 주소창통한 GET / Post/Del/Put
@@ -105,9 +112,9 @@ function App() {
       <Route path='/detail/:id'> {/*아무문자나 받겠다는 URL작명*/}
 
          <stockcontext.Provider value={stock_n}>
-
+          <Suspense fallback={<div>로딩중이에요.</div>}> 
           <Detail shoes={shoes} stock_n={stock_n} stockmodi={stockmodi} />
-
+          </Suspense>
         </stockcontext.Provider>
      
       </Route>

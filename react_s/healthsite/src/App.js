@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg"> 
         <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -13,9 +13,9 @@ function App() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">보디빌더 대회</Nav.Link>
-            <Nav.Link href="#action2">유명 헬스유투버</Nav.Link>
-            <Nav.Link href="#action6">상품 리뷰</Nav.Link>
+            <Nav.Link href="#action1" id='nav_menu'>보디빌더 대회</Nav.Link>
+            <Nav.Link href="#action2" id='nav_menu'>유명 헬스유투버</Nav.Link>
+            <Nav.Link href="#action6" id='nav_menu'>상품 리뷰</Nav.Link>
             <NavDropdown title="게시판" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">운동팁 게시판</NavDropdown.Item>
               <NavDropdown.Item href="#action4">자유 게시판</NavDropdown.Item>
@@ -35,13 +35,7 @@ function App() {
     </Navbar>
 
     <Jumbotron className='background'>
-          <h1>Be Healthy</h1>
-          <p>
-            This is a simple hero unit, a simple jumbotron-style component for calling
-            extra attention to featured content or information.
-          </p>
-          <p>
-            <Button variant="primary">Learn more</Button>
+          <p className='letter'>Are you<br /> READY TO CHANGE?
           </p>
     </Jumbotron>
 

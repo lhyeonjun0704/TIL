@@ -14,7 +14,28 @@
   height: 500px;
 }
 
+.letter{
+  position: absolute;
+  left:100px;
+  top:350px;
+  font-size: 40px;
+}
 
+#navbarScroll{
+  justify-content: space-around;
+}
+
+#nav_menu{
+  padding-left: 50px;
+  padding-right: 50px;
+  font-size: 20px;
+}
+
+#navbarScrollingDropdown{
+  padding-left: 50px;
+  padding-right: 50px;
+  font-size: 20px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
