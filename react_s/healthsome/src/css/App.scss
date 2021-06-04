@@ -1,0 +1,254 @@
+@font-face {
+    font-family: 'Middleschool_student';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_08@1.0/Middleschool_student.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+// body 전체
+*{
+    margin:0;
+    padding: 0;
+} 
+
+// font설정
+$Raleway:'Raleway', sans-serif;
+
+// body layout
+body{
+    display: block;
+    width: 100%;
+    height: 100vh;
+    overflow: scroll;
+    font-family: "Middleschool_student";
+    position: relative;
+    background: #333;
+}
+
+// slide title 
+.slider_title{
+    font-size: 5vw;
+    color:tomato;
+    // text 대문자 쓸건지 말건지. legibility for ruby.
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom:2vw; 
+}
+
+// card틀 &:으로 다양한거 쓸 수 있음.
+// box-sizing 요소의 너비와 높이 계산하는 방법 지정
+// context-box - 기본 css박스. 요소의 너비 100픽셀로 설정하면 콘텐츠의 영역이 100 픽셀 너비를 가지고, 테두리와 안쪽 여백은 더해진다.
+// border-box - 너비 100픽셀 시, 테두리와 안쪽 여백 추가하면, 콘텐츠 영역이 줄어들어 총 너비 100픽섹을 유지한다. 대부분의 경우 이 방법이 크기 조절에 쉽다.
+.card-wrapper{
+    position:relative;
+    width:100%;
+    padding:0 10px;
+    box-sizing: border-box; 
+    &:active, &:hover, &:focus{
+        outline: none;
+        border: none;
+    }
+}
+
+.card{
+    width: 100%;
+    height: 550px;
+    border-radius: 16px;
+    cursor:pointer;
+    position:relative;
+    .card-image{
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index: 2; 
+        // z축을 정한다. 값이 클수록 앞에 위치 한다. 하지만 position 속성이 지정되어있지 않으면 쌓는 순서를 결정하는 데에 영향을 미치지 않는다.
+
+        transition: .5s;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            // img나 video요소와 같은 대체 요소의 콘텐츠의 크기를 어떤 방식으로 조절해 요소에 맞출것인지 정한다. 
+            //contain은 가로세로비 유지하면서, 요소의 콘텐츠 박스 내부에 들어가도록 크기를 맞춤 조절한다. 
+            // cover는 콘텐츠의 가로세로비를 유지하면서, 요소 콘텐츠를 가득 채운다. 서로 일치하지 않는 경우는 객체의 일부가 잘려나간다.
+            // fill - 박스크기에 맞춰 콘텐츠의 크기가 조절된다. 일치하지 않는 경우 콘텐츠 늘어남.
+            // none - 콘텐츠 크기조절 하지 않는다.
+            // scale-down - none과 contain중 대체 콘텐츠의 크기가 더 작아지는 값을 선택.
+        }
+    }
+    &:hover{
+        img{
+            opacity: .4;
+            transition: 0.5s;
+        }
+        .card-image{
+            transform:translateY(-100px);
+            // 현재위치를 기준으로 이동하는 좌표를 설정한다.
+            // translate(x,y) x로 수평 방향, y로 수직 방향을 설정할 수 있다.
+            // translateX() => 수평 방향 +는 오른쪽 -는 왼쪽으로 이동이 가능하다.
+            // translateY() => 수직 방향 +는 아래쪽 -는 위쪽으로 이동이 가능하다.
+            transition: 0.9s; 
+            // 간단한 애니메이션을 위해 쓴다. .#s는 애니메이션이 작동하는 시간(초)
+            // 자세한 내용 https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions
+        }
+    }
+}
+
+.social-icons{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display:flex;
+    li{
+        list-style: none;
+        a{
+            position: relative;
+            display:block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px; // 줄 간격을 말한다. 기본값은 1.2이다. 
+            text-align: center;
+            background: #fff;
+            font-size: 23px;
+            color: #333;
+            font-weight: bold;
+            margin:0 6px;
+            transition: .4s;
+            transform:translateY(200px);
+            opacity: 0;
+        }
+    }
+}
+
+.card:hover{
+    .social-icons li a{
+        transform:translateY(0px);
+        opacity: 1;
+    }
+}
+
+.social-icons li a{
+    transition: .8s;
+    &:hover{
+        transform:rotateY(360deg);
+        color: #fff;
+    }
+}
+
+.social-icons li a:hover{
+    background: #000;
+    transition: .2s;
+}
+
+// transition 요청을 받은 이후 실제로 하기위해 기다려야하는 시간을 지정한다.
+// 여기서 난 각 <a>들을 차례대로 올라오기 위해서 각자 0.1초씩 느리게 배정했다.
+.card:hover li:nth-child(1) a{
+    transition-delay: .1s;
+}
+
+.card:hover li:nth-child(2) a{
+    transition-delay: .2s;
+}
+
+.card:hover li:nth-child(3) a{
+    transition-delay: .3s;
+}
+
+.card:hover li:nth-child(4) a{
+    transition-delay: .4s;
+}
+
+.details{
+    position:absolute;
+    bottom: 400px;
+    left:0;
+    background: #fff;
+    width: 100%;
+    height: 120px;
+    z-index:1;
+    padding: 10px;
+    transition: .6s;
+    h4{
+        margin:30px 0;
+        padding:0;
+        text-align: center;
+        .job-title{
+            font-size: 16px;
+            line-height: 2;
+            color: #333;
+            font-weight: 300;
+            display:block;
+        }
+    }
+}
+
+.card:hover{
+    .details{
+        bottom:0;
+
+    }
+}
+
+.carousel{
+    .slick-dots{
+        bottom:-2.5vw;
+        li{
+            button{
+                width:20px;
+                height: 20px;
+                border:1px solid #fff;
+                border-radius: 20px;
+                &:before{
+                    position:absolute;
+                    top:50%;
+                    left:50%;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 10px;
+                    content: "";
+                    text-align: center;
+                    opacity: 5;
+                    color: #000;
+                    background-color: #fff;
+                    transform:translate(-50%, -50%);
+                    transition:all .3s ease-in-out;
+                }
+            }
+            &.slick-active,
+            &:hover{
+                button{
+                    border-color: tomato;
+                    &:before{
+                        background-color: tomato;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+
+    .slick-prev, .slick-next{
+        width:50px;
+        height: 50px;
+        background-color: #fff;
+    }
+    .slick-prev, .slick-prev:focus, .slick-next:hover, .slick-next:focus{
+        color: #fff;
+        outline: none;
+        background: #fff;
+    }
+    .slick-prev:before, .slick-next:before{
+        color: #000;
+        font-family: $Raleway;
+    }
+    .slick-next{
+        right: -55px;
+    }
+    .slick-prev{
+        left: -55px;
+    }
+}
