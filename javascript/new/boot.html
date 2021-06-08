@@ -23,52 +23,112 @@
 
     <div class='black-background'>
         <div class='white-background'>
-            <p>로그인 하세요.</p>
+          <form action="login.php">
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="Email" id="email">
+              <p id='email-alert'>이메일을 정확하지 않습니다.</p>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password" id='password'>
+              <p id='pass-alert'>패스워드가 정확하지 않습니다.</p>
+            </div>
+            <button type="submit" class="btn btn-primary">전송</button>
+          </form>
+            <!-- <p>로그인 하세요.</p> -->
+            <button class='black-background-btn'>닫기</button>
         </div>
 
     </div>
+
+    <a id='show-menu' class='btn btn-danger btn-lg' role='button'>Show menu</a>
 
     <div class='nav-menu'>
         <h4>S S</h4>
         <a id='nav-sub-button'>Product</a>
     </div>
 
-    <div class="row nav-sub">
-        <div class="col-4">
-          <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile</a>
-            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
-            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
-          </div>
-        </div>
-        <div class="col-8">
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">...</div>
-            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
-          </div>
-        </div>
-      </div>
+    <h3 id='hi'>안녕</h3>
 
-    <div class="jumbotron jumbotron-fluid main-background">
-        <div class="container">
-          <h1 class="display-4">Shirt shop</h1>
-          <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-          <button type="button" class="btn btn-warning">Button</button>
-        </div>
+    <div class='left-menu'>
+      <p>Menu Title</p>
     </div>
+
+    <button class='btn'>모달 열기</button>
 
 
     <script>
-        $('.btn').on('click', function(){
-            $('.black-background').fadeIn();
-        });
 
-        $('#nav-sub-button').click(function(){
-            $('.nav-sub').slideToggle();
-        });
+
+      // 변수는 선언/할당/범위만 알면된다.
+      // 선언-변수만듦/ 할당-값을 집어넣음/ 범위-지역이나 전역
+      // var은 재선언 가능하고 범위는 function이고
+      // let은 재선언 불가능. 범위는 {} 이다.
+      // const도 재선언 불가능 범위는 {} 게다가 const는 재 할당도 불가능하다.
+
+
+      //정규식 만들기 - 문자를 검사할 때 쓰는 것이 정규식이다.
+
+
+      // /[A-z]/.test('abcdefg'); // '여기' 안에 A-z라는 글자가 있는지 검사하는 것이다.
+      // \(역슬레쉬)+S는 특수문자 포함 모든 문자를 표현하는 식이다.(문자 딱 하나만 말한다.)
+      // ex) 이메일 검사에서 @는 \S@라고 넣으면 됩니다.
+      // 선생님의 이메일 정규식 / \S+@\S+\.+\S+ / +기호를 넣으면 문자 여러개도 찾을 수 있음 
+
+
+
+
+      $('#show-menu').on('click', function(){
+        $('.left-menu').animate({marginLeft: '0px'});
+      });
+
+
+
+      $('#hi').click(function(){
+        $('#hi').animate({ marginLeft : '100px', marginTop : '100px' }, 500);
+      });
+
+
+
+      $('form').on('submit', function(e){
+
+        var email_i = $('#email').val();
+        if( /\S+@\S+\.+\S+/.test(email_i) == false ){
+          e.preventDefault();
+        }
+
+
+      //   if($('#email').val() == ""){
+      //     e.preventDefault(); // form의 전송을 막는 코드
+      //     $('#email-alert').show();
+      //   } else if($('#password').val() == ""){
+      //     e.preventDefault();
+      //     $('#pass-alert').show();
+      //   }
+      });
+
+
+
+      $('#email').on('change', function(e){
+        console.log(e);
+      });
+
+
+
+      $('.black-background-btn').on('click', function(){
+        $('.black-background').fadeOut();
+      });
+
+
+      $('.btn').on('click', function(){
+        $('.black-background').css('transform', 'translateY(0px)'); // 이런방법이 있찌만
+        //.addClass()를 사용해서 javascript에서 css를 짜지 마라!
+      });
+
+      $('#nav-sub-button').click(function(){
+          $('.nav-sub').slideToggle();
+      });
+
+      // 요즘은 css에서 애니메이션을 준다. javascript는 좀 ㄴ리다.
     </script>
 
 
