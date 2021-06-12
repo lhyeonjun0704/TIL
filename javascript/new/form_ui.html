@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./form_ui.css">
+
+
+    <!-- Jquery -->
+    <script 
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous">
+     
+
+    </script>
+
+
+
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <form class="container my-5">
+        <div class="form-group">
+      
+          <p>상품선택</p>
+          <select class="form-control" id="option1">
+            <option>바지</option>
+            <option>셔츠</option>
+          </select>
+
+           <div class='size-select'>
+                <p class='mt-4'>사이즈 선택</p>
+                <select class='form-control' id='option2'>
+                </select>
+            </div>
+
+      
+        </div>
+      </form>
+
+      <script>
+
+        // 선택 시 사이즈 나오게 하는 코드
+        // change event : input값이 바뀔 때 작동하는 것. input안에는 값을 바꾸고 다른 곳을 클릭해야 발동하는 것임.
+        // input event : 한 글자마다 발동하는 이벤트.
+
+        $('#option1').on('change', function(){
+            // $('.size-select').show();
+
+            // $('input').val() 사용자의 입력값을 가져 올 수 있다.
+
+            var pants_size = [26, 28, 30, 32, 34, 36];
+
+            if($('#option1').val() == '셔츠'){
+
+                $('#option2').html('');
+
+                // forEach(); 왼쪽 array자료 갯수만큼 반복 해달라는 코드
+
+                pants_size.forEach(function(i){
+                    // 여기서 i는 왼쪽 array의 내용을 가르킨다.
+                    var template = `<option>${i}</option>`; 
+                    
+                    $('#option2').append(template);
+                });
+                // make template
+                // var template = `<option>95</option>
+                // <option>100</option>
+                // <option>105</option>`;
+                // $('#option2').append(template);
+
+                // for (var i = 0; i < pants_size.length; i++){
+                //     var template = `<option>${pants_size[i]}</option>`;
+                //     $('#option2').append(template);
+                // }
+
+            }
+            
+            if($('#option1').val() == '바지'){
+
+                $('#option2').html('');
+
+                var template_2 = `<option>28</option>
+                <option>30</option>
+                <option>32</option>`;
+                $('#option2').append(template_2);
+                
+            }
+        });
+
+      </script>
+
+
+</body>
+</html>
