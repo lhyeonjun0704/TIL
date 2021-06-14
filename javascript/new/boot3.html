@@ -61,21 +61,44 @@
         { id : 2, price : 60000, title : 'Black Monastery' }
     ];
 
-    $('#filter').click(function(){
+    // 사본 생성은 이렇게하자
+    // var array = [...array];
+
+
+
+    // load 이벤트리스너
+    // 이미지가 다 로드가 되었을 경우 코드를 싱행하라.
+    // $('img').on('load', function(){
+      //
+    //});
+    // 또는
+    // $(document).on('load', function(){
+      //
+    //});
+    // 생자바는 document.addEventListener('DOMContentLoaded', function(){
+      // DOM생성이 완료되었을 경우 실행
+    //}); 
+
+
+
+    $('#filter_price').click(function(){
       var new_list = products.filter(function(a){
         return a.price <= 60000
       });
       console.log(new_list);
 
+      $('.card').hide();
+
       new_list.forEach(function(a){
         var template_3 = `<div class="card">
           <img src="https://via.placeholder.com/600">
           <div class="card-body">
-            <h5 id='title_0'>Card title</h5>
-            <p id='price_0'>가격 : 70000</p>
+            <h5 id='title_0'>${a.title}</h5>
+            <p id='price_0'>${a.price}</p>
             <button class="btn btn-danger">주문하기</button>
           </div>
         </div>`;
+        
         $('.card-group').append(template_3);
       })
 

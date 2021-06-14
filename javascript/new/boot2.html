@@ -17,6 +17,9 @@
     <div style='margin-bottom: 500px'></div>
 
 
+    <button>버튼</button>
+    <h1>abcde</h1>
+
 
     <!-- Jquery -->
     <script 
@@ -29,6 +32,24 @@
 
 
     <script>
+
+        var h1 = document.querySelector('h1');
+        var text = document.querySelector('h1').innerHTML;
+
+        function typeani(h1, text){
+        $('button').click(function(){
+            h1.innerHTML = '';
+            for (let i = 0; i < text.length; i++){ // 
+                setTimeout(function(){ 
+                h1.innerHTML = h1.innerHTML + text[i]
+                }, i * 500);
+            }
+
+        });
+        }
+
+        
+
 
         //Array Object
 

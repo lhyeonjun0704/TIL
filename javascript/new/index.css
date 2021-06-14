@@ -76,6 +76,10 @@
 
 .slide-container{
     width: 300vw;
+    
+}
+
+.transforming{
     transition: transform 1s;
 }
 
