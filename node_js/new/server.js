@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+require('dotenv').config();
+
 // body parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,13 +20,13 @@ app.use('/public', express.static('public')); //midleware
 
 var db;
 const MongoClient = require('mongodb').MongoClient;
-MongoClient.connect('mongodb+srv://root:uiop1245@learning.rhtpd.mongodb.net/todoapp?retryWrites=true&w=majority', function(error, client){
+MongoClient.connect(process.env.DB_URL, function(error, client){
     // after connecting
     if(error) return console.log(error);
 
     db = client.db('todoapp');
 
-    app.listen(8080, function(){
+    app.listen(process.env.PORT, function(){
         console.log('listening on 8080');
     });
 
@@ -44,24 +46,6 @@ app.get('/', function(req, res){
 
 app.get('/write', function(req, res){
     res.render('write.ejs');
-});
-
-app.post('/add', function(req, res){
-    res.send('전송 완료');
-    
-    db.collection('counter').findOne({name: 'postnumber'}, function(error, result){
-        console.log(result.totalPost);
-        var totalP = result.totalPost;
-    
-        db.collection('post').insertOne({_id : totalP + 1, 제목 : req.body.title, 날짜 : req.body.date}, function(){
-            console.log('저장 완료');
-            db.collection('counter').updateOne({name: 'postnumber'},{ $inc :{totalPost : 1}}, (error, result) => { // $set은 바꿔달라는 operator. 
-                if(error) return console.log(error)
-            })
-
-        });
-
-    });
 });
 
 
@@ -84,17 +68,6 @@ app.get('/list', (req, res) => {
     });
 
     
-});
-
-
-app.delete('/delete', (req, res) => {
-
-    req.body._id = parseInt(req.body._id); // ajax에서 숫자로 넣어도 문자로 입력이 되는걸 int형으로 바꿀 수 있는 함수이다.
-
-    db.collection('post').deleteOne(req.body, (error, result) => {
-        
-        res.status(200).send({ message : '삭제에 성공했습니다! '}); // 요청이 성공했다 라는 뜻이다. 400은 실패
-    })
 });
 
 
@@ -121,6 +94,40 @@ app.put('/edit',function(req, res){
     });
 });
 
+
+// 검색 기능 search.ejs 만들기
+app.get('/search', (req, res) => {
+    console.log(req.query.value);
+    // 정규식으로 가능은하지만 데이터가 많아지면 db에서 찾는 시간이 너무 오래 걸리게 된다.(find도 마찬가지)
+    // binary search 사용이 가능한데 미리 숫자순으로 정렬이 되어있어야 가능함. 
+    // 띄어쓰기 기준으로 단어를 저장하기 때문에 띄어쓰기가 되어있지 않으면 단어가 포함되어있어도 찾을 수 없다.
+    // nGram이라는 걸 쓰면 가능도 하다.
+    // db.collection('post').find({ $text : { $search : req.query.value } }).toArray((error, result) => {
+    //     console.log(result);
+    //     res.render('search.ejs', {posts : result});
+    // })
+    var condition = [
+        {
+            $search: {
+                index: 'titleSearch',
+                text: {
+                    query : req.query.value,
+                    path: '제목'
+                }
+            }
+        },
+        { $sort : { _id : 1 }}, // 찾고 나서 정렬이 가능하다. 양수는 오름 음수는 내림차순
+        { $limit : 10 } // 갯수 제한하는 코드
+        // {$project : {제목: 1, _id: 0, score: {$meta: "searchScore" }}}; 이런게 가능 searchscore는 검색과 관련이 깊은거 자동으로 매겨줌.
+    ]
+    db.collection('post').aggregate(condition).toArray((error, result) => {
+        console.log(result);
+        res.render('search.ejs', {posts: result});
+    })
+});
+
+
+
 // 회원 인증 방법
 // 1. session-based => sever는 쿠키발행(브라우저에 저장할 수 있는 긴 문자열) /로그인정보 서버에 저장
 // 2. token-based(JWT) => 로그인 시, web token 발행
@@ -142,6 +149,105 @@ app.get('/login', function(req, res){
     res.render('login.ejs');
 });
 
-app.post('/login', function(req, res){
-    
+app.post('/login', passport.authenticate('local', { // local방식으로 인증
+    failureRedirect : '/login' // 로그인을 실패했을 경우 /fail로 이동해주세요.
+}), function(req, res){
+    res.redirect('/');
 });
+
+// 마이페이지로 이동하기
+app.get('/mypage', login_success ,function(req, res){
+    console.log(req.user);
+    res.render('mypage.ejs', {kind : req.user});
+})
+
+function login_success(req, res, next){
+    if(req.user){
+        next();
+    } else{
+        res.send('로그인 해주세요.');
+    }
+}
+
+//아이디 비번 인증하는 세부 코드 작성
+passport.use(new LocalStrategy({
+    // session 정보
+    usernameField: 'id',
+    passwordField: 'pw',
+    session: true, // 세션정보를 저장할지 말지를 하는것
+    passReqToCallback: false, // 아이디/비밀번호 외에도 다른 정보를 검증하려고 할 때 쓰는 부분이다.
+}, function(insertID, insertPW, done){
+    console.log(insertID,insertPW);
+    db.collection('login').findOne({id: insertID}, function(error, result){
+        if(error) return error
+
+        // done 설명 => done은 3개의 파라미터를 가지고 있고 done(서버에러, 성공시사용자DB데이터, error message)이다.
+
+        // db에 아이디가 없는경우, null이라는 뜻이다.
+        if(!result) return done(null, false, {message : '존재하지 않는 아이디입니다.'})
+        
+        // 아이디 이후 -> pw를 일치하는지 확인한다.
+        if(insertPW == result.pw){
+            return done(null, result)
+        } else{
+            return done(null, false, {message : '비밀번호가 일치하지 않습니다.'})
+        }
+    })
+})); 
+
+// 아이디/비번이 일치하는 경우 세션을 만들어서 로그인을 유지시켜 줘야된다.
+
+// id를 이용해서 세션을 저장시키는 코드(로그인 성공시 작동한다.)
+passport.serializeUser(function(user, done){
+    done(null, user.id);
+});
+
+// 이 세션 데이터를 가진 사람을 DB에서 찾아주세요(마이페이지 접속시 작동한다.)
+passport.deserializeUser(function(user_id, done){
+    db.collection('login').findOne({id : user_id}, function(error, result){
+        done(null, result);
+    })
+}); 
+
+
+app.post('/add', function(req, res){
+    res.send('전송 완료');
+    
+    db.collection('counter').findOne({name: 'postnumber'}, function(error, result){
+        console.log(result.totalPost);
+        var totalP = result.totalPost;
+
+        var author = { _id : totalP + 1, 제목 : req.body.title, 날짜 : req.body.date, 작성자 : req.user._id};
+    
+        db.collection('post').insertOne(author, function(error, result){
+            console.log('저장 완료');
+            db.collection('counter').updateOne({name: 'postnumber'},{ $inc :{totalPost : 1}}, (error, result) => { // $set은 바꿔달라는 operator. 
+                if(error) return console.log(error)
+            })
+
+        });
+
+    });
+});
+
+
+app.delete('/delete', (req, res) => {
+
+    req.body._id = parseInt(req.body._id); // ajax에서 숫자로 넣어도 문자로 입력이 되는걸 int형으로 바꿀 수 있는 함수이다.
+
+    var check_author = {_id : req.body._id, 작성자 : req.user._id};
+
+    db.collection('post').deleteOne(check_author, (error, result) => {
+        if (error) return console.log(error)
+        res.status(200).send({ message : '삭제에 성공했습니다! '}); // 요청이 성공했다 라는 뜻이다. 400은 실패
+    })
+});
+
+
+
+app.post('/register', function(req, res){
+    db.collection('login').insertOne({id : req.body.id, pw : req.body.pw}, function(error, result){
+        res.redirect('/');
+    })
+});
+
