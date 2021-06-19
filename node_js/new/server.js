@@ -251,3 +251,37 @@ app.post('/register', function(req, res){
     })
 });
 
+app.use('/shop', require('./routes/shop.js'));
+
+app.use('/board/sub', require('./routes/sub.js'));
+
+// multer 사용법
+let multer = require('multer');
+var storage = multer.diskStorage({  // ram에 저장하려면 memeryStorage
+    destination : function(req, file, cb){
+        cb(null, './public/images');
+    },
+    filename : function(req, file, cb){
+        cb(null, file.originalname);
+    },
+    //filefilter : function(req, file, cb){ 파일 확장자 제한
+ 
+    //}
+    //limits : 파일 크기 제한
+});
+
+var upload = multer({storage : storage});
+
+
+// db에 저장하면 비싸다 보통은 하드에 몰아 넣는 식으로 한다.
+app.get('/upload', function(req, res){
+    res.render('upload.ejs');
+});
+
+app.post('/upload', upload.single('test_img'), function(req, res){ // 여러개를 한 번에 업로드 하기 위해선 single -> array('name', 개수) 그리고 input속성도 변경해야됨.
+    res.send('업로드 완료');
+});
+
+app.get('/image/:imageName', function(req, res){
+    res.sendFile(__dirname + `/public/images/${req.params.imageName}`);
+})
