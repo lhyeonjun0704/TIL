@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+// socket.io
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
 require('dotenv').config();
 
 // body parser
@@ -26,11 +30,13 @@ MongoClient.connect(process.env.DB_URL, function(error, client){
 
     db = client.db('todoapp');
 
-    app.listen(process.env.PORT, function(){
+    http.listen(process.env.PORT, function(){
         console.log('listening on 8080');
     });
 
-})
+});
+
+
 
 
 
@@ -48,6 +54,45 @@ app.get('/write', function(req, res){
     res.render('write.ejs');
 });
 
+// chat url
+app.get('/chat', function(req, res){
+    res.render('chat.ejs');
+});
+
+io.on('connection', function(socket){
+    console.log('연결되었습니다.');
+
+    socket.on('인삿말', function(data){
+        console.log('인삿말이 수신되었음');
+        console.log(data);
+        io.emit('퍼트리기', data);
+    });
+
+});
+
+// 개별 채팅방 기능
+
+var chat1 = io.of('/chat1');
+
+chat1.on('connection', function(socket){
+
+    var room_number = '';
+    
+    socket.on('Room1_enter', function(data){
+        //
+        socket.join(data.message); // 서버를 통해서만 입장이 가능한 방이다.
+        room_number = data.message;
+    });
+
+    console.log('채팅방1로 접속하였습니다.');
+
+    socket.on('인삿말', function(data){
+        console.log('인삿말이 수신되었음');
+        console.log(data);
+        chat1.to(room_number).emit('퍼트리기', data);
+    });
+
+});
 
 
 // 쉬어가기 rest api를 쓰는게 좋다?
@@ -257,6 +302,7 @@ app.use('/board/sub', require('./routes/sub.js'));
 
 // multer 사용법
 let multer = require('multer');
+const { isObject } = require('util');
 var storage = multer.diskStorage({  // ram에 저장하려면 memeryStorage
     destination : function(req, file, cb){
         cb(null, './public/images');

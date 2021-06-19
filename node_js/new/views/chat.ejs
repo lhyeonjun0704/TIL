@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    
+    <%- include('nav.html') %>
+
+
+    <h4 class='m-5 text-center'>고객센터</h4>
+
+    <ul class="list-group" style='height: 300px; overflow-y: scroll;'>
+      <li class="list-group-item">An item</li>
+      <li class="list-group-item">A second item</li>
+      <li class="list-group-item">A third item</li>
+      <li class="list-group-item">A fourth item</li>
+      <li class="list-group-item">And a fifth one</li>
+    </ul>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="보낼 내용" aria-label="Recipient's username" aria-describedby="button-addon2" id='main-input'>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">보내기</button>
+        </div>
+    </div>
+
+    <div class='container'>
+      <button class='btn btn-secondary mx-auto d-block w-100 mt-1'>Room1</button>
+      <button class='btn btn-secondary mx-auto d-block w-100 mt-1'>Room2</button>
+    </div>
+
+    
+
+    <!-- socket.io cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js" integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <script>
+
+      var socket = io('/chat1');
+
+      // room 1
+      $('.mt-1').eq(0).click(function(){
+        socket.emit('Room1_enter', {message : 'room1', pw : 1234});
+      });
+
+      // room 2
+      $('.mt-1').eq(0).click(function(){
+        socket.emit('Room2_enter', 'room2');
+      });
+
+      // chat -> server
+      $('#button-addon2').click(function(){
+          socket.emit('인삿말', $('#main-input').val());
+      });
+
+      // server -> chat
+      socket.on('퍼트리기', function(data){
+        $('.list-group').append(`<li class="list-group-item">${data}</li>`);
+        $('.list-group').scrollTop($('.list-group').prop('scrollHeight')); // 스크롤을 맨 밑으로 고정해주는 방법이다.
+      });
+
+
+      // $('#join1').click(function(){
+        
+      //   // 개별 채팅방 만들기 -namespace이용
+        
+
+      //   // chat -> server
+      //   $('#button-addon2').click(function(){
+      //       socket.emit('인삿말', $('#main-input').val());
+      //   });
+
+      //   // server -> chat
+      //   socket.on('퍼트리기', function(data){
+      //     $('.list-group').append(`<li class="list-group-item">${data}</li>`);
+      //     $('.list-group').scrollTop($('.list-group').prop('scrollHeight')); // 스크롤을 맨 밑으로 고정해주는 방법이다.
+      //   });
+
+      //   // 채팅방 나오는 방법 disconnect 검색!
+      // })
+
+      
+      
+
+
+        
+
+
+    </script>
+
+  </body>
+</html>
